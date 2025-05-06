@@ -1,0 +1,3 @@
+/home/sp/priv/screener/build/CMakeFiles/screener.dir
+/home/sp/priv/screener/build/CMakeFiles/edit_cache.dir
+/home/sp/priv/screener/build/CMakeFiles/rebuild_cache.dir

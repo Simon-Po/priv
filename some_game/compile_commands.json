@@ -1,0 +1,7 @@
+[
+  {
+    "directory": "/home/sp/dev/some_game",
+    "command": "clang++ -std=c++20 -I include -c src/main.cpp -o bin/main.o",
+    "file": "src/main.cpp"
+  }
+]

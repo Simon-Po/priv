@@ -1,0 +1,78 @@
+use raylib::prelude::*;
+#[derive(Debug, Clone)]
+struct Vec2 {
+    x: i32,
+    y: i32,
+}
+#[derive(Debug, Clone)]
+struct Cell {
+    pos: Vec2,
+    state: bool,
+}
+
+impl Cell {
+    fn check_neighbors(&self, bord: &[Cell]) {
+        let (index, _, _) = generate_index(self.pos.x, self.pos.y);
+    }
+}
+
+const WIDTH: i32 = 800;
+const HEIGHT: i32 = 800;
+const COLUMNSIZE: i32 = 10;
+const CELLWIDTH: i32 = WIDTH / COLUMNSIZE;
+const CELLHEIGHT: i32 = HEIGHT / COLUMNSIZE;
+const CELLAMOUNT: i32 = COLUMNSIZE;
+const COLUMNS: i32 = WIDTH / CELLWIDTH;
+fn draw_bord(mut d: RaylibDrawHandle, bord: &[Cell]) {
+    for x in (0..WIDTH).step_by(CELLWIDTH as usize) {
+        for y in (0..HEIGHT).step_by(CELLHEIGHT as usize) {
+            let (index, _, _) = generate_index(x, y);
+            if bord[index].state {
+                d.draw_rectangle(x, y, CELLWIDTH, CELLHEIGHT, Color::NAVY);
+            } else {
+                d.draw_rectangle_lines(x, y, CELLWIDTH, CELLHEIGHT, Color::NAVY);
+            }
+        }
+    }
+}
+fn generate_index(x: i32, y: i32) -> (usize, i32, i32) {
+    let x_pos = x / CELLWIDTH;
+    let y_pos = y / CELLHEIGHT;
+
+    ((y_pos * COLUMNS + x_pos) as usize, x_pos, y_pos)
+}
+
+fn main() {
+    let (mut rl, thread) = raylib::init()
+        .size(WIDTH, HEIGHT)
+        .title("Game Of Life")
+        .build();
+
+    // Calculate the number of columns
+
+    // Initialize the bord with default `Cell` instances
+    let mut bord: Vec<Cell> = vec![
+        Cell {
+            pos: Vec2 { x: 0, y: 0 },
+            state: false,
+        };
+        (CELLAMOUNT * CELLAMOUNT) as usize
+    ];
+
+    // Populate the `bord` with actual `Cell` instances
+    for x in (0..WIDTH).step_by(CELLWIDTH as usize) {
+        for y in (0..HEIGHT).step_by(CELLHEIGHT as usize) {
+            let (index, x_pos, y_pos) = generate_index(x, y);
+            bord[index] = Cell {
+                pos: Vec2 { x: x_pos, y: y_pos },
+                state: false,
+            };
+        }
+        bord[12].state = true;
+        while !rl.window_should_close() {
+            let mut d = rl.begin_drawing(&thread);
+            d.clear_background(Color::GRAY);
+            draw_bord(d, &bord)
+        }
+    }
+}

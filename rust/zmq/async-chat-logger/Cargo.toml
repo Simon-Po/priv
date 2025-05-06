@@ -1,0 +1,9 @@
+[package]
+name = "async-chat-logger"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = "4.5.37"
+rand = "0.9.1"
+zmq = "0.10.0"

@@ -1,0 +1,4 @@
+/home/sp/priv/c++/dsa/Array/build/CMakeFiles/out.dir
+/home/sp/priv/c++/dsa/Array/build/CMakeFiles/run.dir
+/home/sp/priv/c++/dsa/Array/build/CMakeFiles/edit_cache.dir
+/home/sp/priv/c++/dsa/Array/build/CMakeFiles/rebuild_cache.dir

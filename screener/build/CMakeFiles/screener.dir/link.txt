@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/screener.dir/src/main.cpp.o -o screener  -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0

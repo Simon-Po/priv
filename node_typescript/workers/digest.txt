@@ -1,0 +1,129 @@
+Directory structure:
+└── /./
+    ├── package.json
+    ├── src/
+    │   ├── worker.ts
+    │   └── index.ts
+    ├── README.md
+    ├── tsconfig.json
+    └── bun.lockb
+
+================================================
+File: /package.json
+================================================
+{
+  "name": "workers",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run ./src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "bun": "^1.2.9"
+  }
+}
+
+
+================================================
+File: /src/worker.ts
+================================================
+
+import { createHash } from "node:crypto"
+
+export function sha256(content: String) {
+  // simulate big work
+  for (let i = 0; i < 8_000_000_000; i++) { }
+  return createHash("sha256").update(Buffer.from(content, "utf8")).digest("hex")
+}
+
+
+================================================
+File: /src/index.ts
+================================================
+import { Worker, isMainThread } from "node:worker_threads"
+import * as Bun from "bun"
+
+
+
+
+Bun.serve(
+  {
+    port: 3030,
+    routes: {
+      "/": new Response("Hey there"),
+      "/sha": async (req: Bun.BunRequest<"/sha">) => {
+        const worker = new Worker("worker.ts")
+        worker.on("message", (msg) => {
+          return new Response(msg)
+        }
+        )
+        
+      },
+    }
+  }
+)
+
+
+
+
+
+
+
+================================================
+File: /README.md
+================================================
+# workers
+
+To install dependencies:
+
+```bash
+bun install
+```
+
+To run:
+
+```bash
+bun run index.ts
+```
+
+This project was created using `bun init` in bun v1.1.33. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+
+
+================================================
+File: /tsconfig.json
+================================================
+{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
+}
+
+
